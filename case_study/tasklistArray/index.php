@@ -1,3 +1,13 @@
+<?php
+//Carico le dipendenze
+require "./lib/JSONReader.php";
+//Model(la parte che gestisce i dati dell'applicazione)
+$tasklist=JSONReader('./dataset/Tasklist.json');
+//Controller(colui che gestisce il tutto)
+
+?>
+
+<!-- view /intercetta azioni dell'utente -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,9 +23,19 @@
     <button type="submit">Cerca</button>
     </form>
     <ul>
-    <li class="tasklist-item tasklist-item-progress">Latte <b>progress</b> </li>
-    <li class="tasklist-item tasklist-item-done">Uova - <b>done</b> </li>
-    <li class="tasklist-item tasklist-item-todo">Uova - <b>todo</b></li>
+    <?php
+    foreach ($tasklist as $key => $task) {
+            $status=$task['status'];
+            $taskName=$task['taskName'];
+
+        ?>
+        <li class="tasklist-item tasklist-item-<?=$status?>">
+        <?= $taskName ?> <b> <?= $status ?></b> </li>
+    <?php } ?>
+    
+    
+   <!-- <li class="tasklist-item tasklist-item-done">Uova - <b>done</b> </li>
+    <li class="tasklist-item tasklist-item-todo">Farina - <b>todo</b></li>-->
     </ul>
 </body>
 </html>
