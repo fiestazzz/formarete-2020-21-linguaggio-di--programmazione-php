@@ -1,8 +1,21 @@
 <?php
+
 //Carico le dipendenze
 require "./lib/JSONReader.php";
+require "./lib/searchFunctions.php";
 //Model(la parte che gestisce i dati dell'applicazione)
 $tasklist=JSONReader('./dataset/Tasklist.json');
+if (isset($_GET['searchText']))
+{
+    $searchText=trim(filter_var($_GET['searchText'], FILTER_SANITIZE_STRING));
+    $tasklist=array_filter($tasklist ,searchText($searchText));
+}
+else
+{
+    $searchText='';
+}
+//$searchText= isset($_GET['searchText'])? trim(filter_var($_GET['searchText'], FILTER_SANITIZE_STRING));
+
 //Controller(colui che gestisce il tutto)
 
 ?>
@@ -18,8 +31,8 @@ $tasklist=JSONReader('./dataset/Tasklist.json');
     <title>Document</title>
 </head>
 <body>
-    <form action="">
-    <input type="text" name="searchText">
+    <form action="index.php">
+    <input type="text" value="<?= $searchText ?>" name="searchText">
     <button type="submit">Cerca</button>
     </form>
     <ul>
